@@ -1,15 +1,26 @@
 import java.awt.*;
+import java.util.Map;
+import java.util.HashMap;
 
-public class Cars {
+public class Cars implements Movable{
 
     int nrDoors; // Number of doors on the car
     int enginePower; // Engine power of the car
     double currentSpeed; // The current speed of the car
     Color color; // Color of the car
     String modelName; // The car model name
-    
+    Map<String,Integer> dirMap = new HashMap<String,Integer>(){{
+        put("EAST", 1);
+        put("SOUTH", 2);
+        put("WEST", 3);
+        put("NORTH", 4);
+    }};
+    String facingDirection;
+
     Cars(){
+        facingDirection = "EAST";
         stopEngine();
+        
     }
     
     public int getNrDoors(){
@@ -59,5 +70,17 @@ public class Cars {
     // TODO fix this method according to lab pm
     public void brake(double amount){
         decrementSpeed(amount);
+    }
+
+    public void turnLeft(){
+
+    }
+
+    public void turnRight(){
+
+    }
+
+    public void move(){
+
     }
 }
