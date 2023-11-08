@@ -1,41 +1,56 @@
 import java.awt.*;
-import java.util.Map;
-import java.util.HashMap;
+
 
 public class Cars implements Movable{
 
-    int nrDoors; // Number of doors on the car
-    int enginePower; // Engine power of the car
-    double currentSpeed; // The current speed of the car
-    Color color; // Color of the car
-    String modelName; // The car model name
-    Map<String,Integer> dirMap = new HashMap<String,Integer>(){{
-        put("EAST", 1);
-        put("SOUTH", 2);
-        put("WEST", 3);
-        put("NORTH", 4);
-    }};
-    String facingDirection;
-
-    Cars(){
-        facingDirection = "EAST";
-        stopEngine();
-        
+    enum Direction {
+    NORTH,
+    EAST,
+    WEST,
+    SOUTH
     }
     
-    public int getNrDoors(){
+    private int nrDoors; // Number of doors on the car
+    private int enginePower; // Engine power of the car
+    private float currentSpeed; // The current speed of the car
+    private Color color; // Color of the car
+    private String modelName; // The car model name
+    private Direction facingDirection;
+    private Point position;
+    
+    Cars(int nrDoors,Color color,int enginePower,String modelName){
+        this.nrDoors = nrDoors;
+        this.color = color;
+        this.enginePower = enginePower;
+        this.modelName = modelName;
+        facingDirection = Direction.EAST;
+        position = new Point(0,0);
+        stopEngine();
+    }
+    
+    public final int getNrDoors(){
         return nrDoors;
     }
-    public double getEnginePower(){
+    public final float getEnginePower(){
         return enginePower;
     }
 
-    public double getCurrentSpeed(){
+    public final float getCurrentSpeed(){
         return currentSpeed;
     }
 
-    public Color getColor(){
+    public final Color getColor(){
         return color;
+    }
+
+    public final String getModelName(){
+        return modelName;
+    }
+
+    //Used for testing
+    
+    void setCurrentSpeed(float speed) {
+        currentSpeed = speed;
     }
 
     public void setColor(Color clr){
@@ -43,44 +58,81 @@ public class Cars implements Movable{
     }
 
     public void startEngine(){
-	    currentSpeed = 0.1;
+	    currentSpeed = 0.1f;
     }
 
     public void stopEngine(){
-	    currentSpeed = 0;
+	    currentSpeed = 0f;
     }
     
-    public double speedFactor(){
-        return enginePower * 0.01;
+    float getSpeedFactor(){
+        return enginePower * 0.01f;
     }
 
-    private void incrementSpeed(double amount){
-	    currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount,enginePower);
+    private void incrementSpeed(float amount){
+	    currentSpeed = Math.min(getCurrentSpeed() + getSpeedFactor() * amount,enginePower);
     }
 
-    private void decrementSpeed(double amount){
-        currentSpeed = Math.max(getCurrentSpeed() - speedFactor() * amount,0);
+    private void decrementSpeed(float amount){
+        currentSpeed = Math.max(getCurrentSpeed() - getSpeedFactor() * amount,0);
     }
 
-    // TODO fix this method according to lab pm
-    public void gas(double amount){
+    public void gas(float amount){
         incrementSpeed(amount);
     }
 
-    // TODO fix this method according to lab pm
-    public void brake(double amount){
+    public void brake(float amount){
         decrementSpeed(amount);
     }
 
     public void turnLeft(){
-
+        switch (facingDirection) {
+            case NORTH:
+                facingDirection = Direction.WEST;
+                break;
+            case EAST:
+                facingDirection = Direction.NORTH;
+                break;
+            case SOUTH:
+                facingDirection = Direction.EAST;
+                break;
+            case WEST:
+                facingDirection = Direction.SOUTH;
+                break;
+        }
     }
 
     public void turnRight(){
-
+        switch (facingDirection) {
+            case NORTH:
+                facingDirection = Direction.EAST;
+                break;
+            case EAST:
+                facingDirection = Direction.SOUTH;
+                break;
+            case SOUTH:
+                facingDirection = Direction.WEST;
+                break;
+            case WEST:
+                facingDirection = Direction.NORTH;
+                break;
+        }
     }
 
     public void move(){
-
+        switch (facingDirection) {
+            case NORTH:
+                position.y += currentSpeed;
+                break;
+            case WEST:
+                position.x -= currentSpeed;
+                break;
+            case EAST:
+                position.x += currentSpeed;
+                break;
+            case SOUTH:
+                position.y -= currentSpeed;
+                break;
+        }
     }
 }
