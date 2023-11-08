@@ -1,5 +1,6 @@
 import java.awt.Color;
 
+
 import org.junit.*;
 
 public class CarsTest {
@@ -47,6 +48,14 @@ public class CarsTest {
     }
     
     @Test
+    public void TestModelName(){
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        Assert.assertTrue((saab.getModelName() == "Saab95") && (volvo.getModelName() == "Volvo240"));
+    }
+
+    @Test
     public void TestStartEngine() {
         Saab95 saab = new Saab95();
         Volvo240 volvo = new Volvo240();
@@ -60,6 +69,13 @@ public class CarsTest {
     public void TestStopEngine() {
         Saab95 saab = new Saab95();
         Volvo240 volvo = new Volvo240();
+
+        volvo.startEngine();
+        saab.startEngine();
+
+        volvo.gas(1);
+        saab.gas(1);
+
         volvo.stopEngine();
         saab.stopEngine();
 
@@ -76,31 +92,177 @@ public class CarsTest {
         Assert.assertTrue((saab.getSpeedFactor() == saabSpeedFactor) && (volvo.getSpeedFactor()) == volvoSpeedFactor);
     }
 
+
     @Test
-    public void TestGasAndSaabTurbo() {
+    public void TestGasAndBrakeAndTurbo() {
+        Boolean turboGasTest = false;
+        Boolean brakeTest = false;
+
+
         Saab95 saab = new Saab95();
         Volvo240 volvo = new Volvo240();
+        
         volvo.startEngine();
         saab.startEngine();
-        saab.setTurboOn();
-        volvo.gas(2);
-        saab.gas(2);
-        
-        
 
-        Assert.assertTrue((saab.getCurrentSpeed() == 3.35f) && (volvo.getCurrentSpeed() == 2.6f));
+        saab.setTurboOn();
+        volvo.gas(1);
+        saab.gas(1);
+        
+        
+        if ((saab.getCurrentSpeed() == 1.725f) && (volvo.getCurrentSpeed() == 1.35f)) {
+            turboGasTest = true;
+        }
+        
+        volvo.brake(0.1f);
+        saab.brake(0.1f);
+
+        if ((saab.getCurrentSpeed() == 1.5625f) && (volvo.getCurrentSpeed() == 1.225f)) {
+            brakeTest = true;
+        }
+
+        Assert.assertTrue(turboGasTest && brakeTest);
     }
 
-    public void TestBrake() {
+    @Test
+    public void gasNotDecreaseSpeed() {
         Saab95 saab = new Saab95();
         Volvo240 volvo = new Volvo240();
-        volvo.setCurrentSpeed(15f);
-        saab.setCurrentSpeed(15f);
-        volvo.brake(2);
-        saab.brake(2);
-        
-        
 
-        Assert.assertTrue((saab.getCurrentSpeed() == 12.5f) && (volvo.getCurrentSpeed() == 12.5f));
+        saab.startEngine();
+        volvo.startEngine();
+
+        float oldSpeedSaab = saab.getCurrentSpeed();
+        float oldSpeedVolvo = volvo.getCurrentSpeed();
+        saab.gas(1);
+        volvo.gas(1);
+        
+        Assert.assertTrue(!(oldSpeedSaab > saab.getCurrentSpeed()) && !(oldSpeedVolvo > volvo.getCurrentSpeed()));
+
+    }
+    
+    @Test
+    public void brakeNotIncreaseSpeed() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        saab.startEngine();
+        volvo.startEngine();
+
+        float oldSpeedSaab = saab.getCurrentSpeed();
+        float oldSpeedVolvo = volvo.getCurrentSpeed();
+        saab.brake(1);
+        volvo.brake(1);
+
+        Assert.assertTrue(!(oldSpeedSaab < saab.getCurrentSpeed()) && !(oldSpeedVolvo < volvo.getCurrentSpeed()));
+
+    }
+
+    @Test
+    public void speedAboveZero() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        saab.startEngine();
+        volvo.startEngine();
+
+        for (int index = 0; index < 600; index++) {
+            saab.brake(1);
+            volvo.brake(1);
+        }
+
+        Assert.assertTrue(saab.getCurrentSpeed() >= 0 && volvo.getCurrentSpeed() >= 0);
+    }
+    
+    @Test
+    public void speedLessThanEnginepower() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        saab.startEngine();
+        volvo.startEngine();
+
+        for (int index = 0; index < 600; index++) {
+            saab.gas(1);
+            volvo.gas(1);
+        }
+
+        Assert.assertTrue(saab.getCurrentSpeed() <= saab.getEnginePower() && volvo.getCurrentSpeed() <= volvo.getEnginePower());
+    }
+
+
+    @Test
+    public void testMoveForward() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        volvo.startEngine();
+        saab.startEngine();
+        volvo.move();
+        saab.move();
+        
+        Assert.assertTrue(volvo.getPosition().y == 0.1f && saab.getPosition().y == 0.1f);
+    }
+
+    @Test
+    public void testTurnRight() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        volvo.startEngine();
+        saab.startEngine();
+        volvo.turnRight();
+        saab.turnRight();
+        volvo.move();
+        saab.move();
+        
+        Assert.assertTrue(volvo.getPosition().x == 0.1f && saab.getPosition().x == 0.1f);
+        
+    }
+
+    @Test
+    public void testTurnLeft() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        volvo.startEngine();
+        saab.startEngine();
+        volvo.turnLeft();
+        saab.turnLeft();
+        volvo.move();
+        saab.move();
+        
+        Assert.assertTrue(volvo.getPosition().x == -0.1f && saab.getPosition().x == -0.1f);
+        
+    }
+
+    @Test
+    public void testMoveForwardAndBack() {
+        Saab95 saab = new Saab95();
+        Volvo240 volvo = new Volvo240();
+
+        volvo.startEngine();
+        saab.startEngine();
+        volvo.move();
+        saab.move();
+        volvo.turnLeft();
+        volvo.turnLeft();
+        saab.turnRight();
+        saab.turnRight();
+
+        volvo.move();
+        saab.move();
+        
+        Assert.assertTrue(volvo.getPosition().y == 0f && saab.getPosition().y == 0f);
+    }
+
+
+        
+    @Test
+    public void GetPositionTest() {
+
+        Saab95 saab = new Saab95();
+        
+        Assert.assertTrue(saab.getPosition() instanceof CarPosition);
     }
 }

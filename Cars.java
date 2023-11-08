@@ -1,6 +1,5 @@
 import java.awt.*;
 
-
 public class Cars implements Movable{
 
     enum Direction {
@@ -16,15 +15,16 @@ public class Cars implements Movable{
     private Color color; // Color of the car
     private String modelName; // The car model name
     private Direction facingDirection;
-    private Point position;
+    private CarPosition position;
+    private boolean carIsOn;
     
     Cars(int nrDoors,Color color,int enginePower,String modelName){
         this.nrDoors = nrDoors;
         this.color = color;
         this.enginePower = enginePower;
         this.modelName = modelName;
-        facingDirection = Direction.EAST;
-        position = new Point(0,0);
+        facingDirection = Direction.NORTH;
+        position = new CarPosition(0f,0f);
         stopEngine();
     }
     
@@ -47,11 +47,6 @@ public class Cars implements Movable{
         return modelName;
     }
 
-    //Used for testing
-    
-    void setCurrentSpeed(float speed) {
-        currentSpeed = speed;
-    }
 
     public void setColor(Color clr){
 	    color = clr;
@@ -59,10 +54,12 @@ public class Cars implements Movable{
 
     public void startEngine(){
 	    currentSpeed = 0.1f;
+        carIsOn = true;
     }
 
     public void stopEngine(){
 	    currentSpeed = 0f;
+        carIsOn = false;
     }
     
     float getSpeedFactor(){
@@ -78,11 +75,15 @@ public class Cars implements Movable{
     }
 
     public void gas(float amount){
-        incrementSpeed(amount);
+        if(amount <= 1 && amount >= 0 && carIsOn) {
+            incrementSpeed(amount);
+        }
     }
-
+    
     public void brake(float amount){
-        decrementSpeed(amount);
+        if(amount <= 1 && amount >= 0 && carIsOn) {
+            decrementSpeed(amount);
+        }
     }
 
     public void turnLeft(){
@@ -118,7 +119,7 @@ public class Cars implements Movable{
                 break;
         }
     }
-
+    
     public void move(){
         switch (facingDirection) {
             case NORTH:
@@ -134,5 +135,19 @@ public class Cars implements Movable{
                 position.y -= currentSpeed;
                 break;
         }
+    }
+
+    public CarPosition getPosition(){
+        return position;
+    }
+}
+
+class CarPosition {
+    float x;
+    float y;
+
+    CarPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 }
