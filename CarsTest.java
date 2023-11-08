@@ -5,42 +5,31 @@ import org.junit.*;
 
 public class CarsTest {
 
+    Saab95 saab = new Saab95();
+    Volvo240 volvo = new Volvo240();
+
     @Test
     public void TestNrDoors() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         Assert.assertTrue((saab.getNrDoors() == 2) && (volvo.getNrDoors() == 4));
     }
 
     @Test
     public void TestEnginePower() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         Assert.assertTrue((saab.getEnginePower() == 125) && (volvo.getEnginePower() == 100));
     }
 
     @Test
     public void TestCurrentSpeed() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         Assert.assertTrue((saab.getCurrentSpeed() == 0) && (volvo.getCurrentSpeed() == 0));
     }
 
     @Test
     public void TestColor() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         Assert.assertTrue((saab.getColor() == Color.red) && (volvo.getColor() == Color.black));
     }
 
     @Test
     public void TestSetColor() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
         volvo.setColor(Color.blue);
         saab.setColor(Color.blue);
 
@@ -49,16 +38,11 @@ public class CarsTest {
     
     @Test
     public void TestModelName(){
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         Assert.assertTrue((saab.getModelName() == "Saab95") && (volvo.getModelName() == "Volvo240"));
     }
 
     @Test
     public void TestStartEngine() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
         volvo.startEngine();
         saab.startEngine();
 
@@ -67,9 +51,6 @@ public class CarsTest {
     
     @Test
     public void TestStopEngine() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         volvo.startEngine();
         saab.startEngine();
 
@@ -84,8 +65,6 @@ public class CarsTest {
 
     @Test
     public void TestSpeedFactor() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
         float saabSpeedFactor = saab.getEnginePower() * 0.01f * saab.turbo;
         float volvoSpeedFactor = volvo.getEnginePower() * 0.01f * volvo.trimFactor;
 
@@ -98,10 +77,6 @@ public class CarsTest {
         Boolean turboGasTest = false;
         Boolean brakeTest = false;
 
-
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-        
         volvo.startEngine();
         saab.startEngine();
 
@@ -126,9 +101,6 @@ public class CarsTest {
 
     @Test
     public void gasNotDecreaseSpeed() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         saab.startEngine();
         volvo.startEngine();
 
@@ -143,9 +115,6 @@ public class CarsTest {
     
     @Test
     public void brakeNotIncreaseSpeed() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         saab.startEngine();
         volvo.startEngine();
 
@@ -160,9 +129,6 @@ public class CarsTest {
 
     @Test
     public void speedAboveZero() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         saab.startEngine();
         volvo.startEngine();
 
@@ -176,9 +142,6 @@ public class CarsTest {
     
     @Test
     public void speedLessThanEnginepower() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         saab.startEngine();
         volvo.startEngine();
 
@@ -193,9 +156,6 @@ public class CarsTest {
 
     @Test
     public void testMoveForward() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         volvo.startEngine();
         saab.startEngine();
         volvo.move();
@@ -206,9 +166,6 @@ public class CarsTest {
 
     @Test
     public void testTurnRight() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         volvo.startEngine();
         saab.startEngine();
         volvo.turnRight();
@@ -222,9 +179,6 @@ public class CarsTest {
 
     @Test
     public void testTurnLeft() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         volvo.startEngine();
         saab.startEngine();
         volvo.turnLeft();
@@ -238,9 +192,6 @@ public class CarsTest {
 
     @Test
     public void testMoveForwardAndBack() {
-        Saab95 saab = new Saab95();
-        Volvo240 volvo = new Volvo240();
-
         volvo.startEngine();
         saab.startEngine();
         volvo.move();
@@ -255,14 +206,9 @@ public class CarsTest {
         
         Assert.assertTrue(volvo.getPosition().y == 0f && saab.getPosition().y == 0f);
     }
-
-
-        
+ 
     @Test
     public void GetPositionTest() {
-
-        Saab95 saab = new Saab95();
-        
         Assert.assertTrue(saab.getPosition() instanceof CarPosition);
-    }
+    } 
 }
