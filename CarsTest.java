@@ -1,6 +1,4 @@
 import java.awt.Color;
-
-
 import org.junit.*;
 
 public class CarsTest {
@@ -211,4 +209,9 @@ public class CarsTest {
     public void GetPositionTest() {
         Assert.assertTrue(saab.getPosition() instanceof CarPosition);
     } 
+
+    @Test
+    public void tt() {
+        
+    }
 }

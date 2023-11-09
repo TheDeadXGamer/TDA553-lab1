@@ -21,10 +21,6 @@ class Saab95 extends Cars{
     @Override
     float getSpeedFactor(){
         if(turboOn) turbo = 1.3f;
-        return getEnginePower() * 0.01f * turbo;
-        
+        return getEnginePower() * 0.01f * turbo;        
     }
 }
-
-
-
